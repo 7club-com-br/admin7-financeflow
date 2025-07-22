@@ -780,6 +780,10 @@ export type Database = {
           despesas_pendentes: number
         }[]
       }
+      criar_dados_demo: {
+        Args: { p_user_id: string }
+        Returns: boolean
+      }
       exec_sql: {
         Args: { sql_query: string }
         Returns: undefined
