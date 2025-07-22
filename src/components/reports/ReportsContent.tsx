@@ -6,8 +6,8 @@ import { Label } from '@/components/ui/label'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useFinancialReports } from '@/hooks/useReportsData'
 import { formatCurrency, formatDate } from '@/lib/utils'
-import { Calendar, TrendingUp, TrendingDown, DollarSign, PieChart, Download } from 'lucide-react'
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart as RechartsPieChart, Cell } from 'recharts'
+import { Calendar, TrendingUp, TrendingDown, DollarSign, PieChart as PieChartIcon, Download } from 'lucide-react'
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart as RechartsPieChart, Cell, Pie } from 'recharts'
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8', '#82CA9D']
 
@@ -164,7 +164,7 @@ export function ReportsContent() {
               <CardContent>
                 <ResponsiveContainer width="100%" height={300}>
                   <RechartsPieChart>
-                    <RechartsPieChart
+                    <Pie
                       data={categoryReport}
                       cx="50%"
                       cy="50%"
@@ -174,7 +174,7 @@ export function ReportsContent() {
                       {categoryReport.map((_, index) => (
                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                       ))}
-                    </RechartsPieChart>
+                    </Pie>
                     <Tooltip formatter={(value) => formatCurrency(Number(value))} />
                   </RechartsPieChart>
                 </ResponsiveContainer>

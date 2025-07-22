@@ -1,4 +1,3 @@
-import { DashboardLayout } from '@/components/layout/DashboardLayout'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { RecurrenceForm } from '@/components/financial/RecurrenceForm'
 import { RecurrenceList } from '@/components/financial/RecurrenceList'
@@ -6,8 +5,7 @@ import { Calendar, Repeat } from 'lucide-react'
 
 export default function Recurrences() {
   return (
-    <DashboardLayout>
-      <div className="container mx-auto px-4 py-8 space-y-6">
+    <div className="container mx-auto px-4 py-8 space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-primary/10 rounded-lg">
@@ -83,6 +81,5 @@ export default function Recurrences() {
           </CardContent>
         </Card>
       </div>
-    </DashboardLayout>
   )
 }
