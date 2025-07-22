@@ -95,6 +95,33 @@ export type Database = {
         }
         Relationships: []
       }
+      cotacoes: {
+        Row: {
+          created_at: string | null
+          data_atualizacao: string | null
+          fonte: string | null
+          id: string
+          moeda: string
+          valor_brl: number
+        }
+        Insert: {
+          created_at?: string | null
+          data_atualizacao?: string | null
+          fonte?: string | null
+          id?: string
+          moeda: string
+          valor_brl: number
+        }
+        Update: {
+          created_at?: string | null
+          data_atualizacao?: string | null
+          fonte?: string | null
+          id?: string
+          moeda?: string
+          valor_brl?: number
+        }
+        Relationships: []
+      }
       financeiro_categorias: {
         Row: {
           ativa: boolean | null
@@ -387,6 +414,157 @@ export type Database = {
         }
         Relationships: []
       }
+      licencas: {
+        Row: {
+          ativa: boolean | null
+          chave_ativacao: string | null
+          created_at: string | null
+          data_inicio: string
+          data_vencimento: string
+          id: string
+          limite_lancamentos: number | null
+          limite_produtos: number | null
+          limite_usuarios: number | null
+          recursos_liberados: Json | null
+          tipo_plano: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          ativa?: boolean | null
+          chave_ativacao?: string | null
+          created_at?: string | null
+          data_inicio?: string
+          data_vencimento: string
+          id?: string
+          limite_lancamentos?: number | null
+          limite_produtos?: number | null
+          limite_usuarios?: number | null
+          recursos_liberados?: Json | null
+          tipo_plano?: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          ativa?: boolean | null
+          chave_ativacao?: string | null
+          created_at?: string | null
+          data_inicio?: string
+          data_vencimento?: string
+          id?: string
+          limite_lancamentos?: number | null
+          limite_produtos?: number | null
+          limite_usuarios?: number | null
+          recursos_liberados?: Json | null
+          tipo_plano?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "licencas_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      produtos: {
+        Row: {
+          ativo: boolean | null
+          created_at: string | null
+          descricao: string | null
+          id: string
+          nome: string
+          tipo_preco: string | null
+          tipo_produto_id: string
+          updated_at: string | null
+          user_id: string
+          valor_brl: number | null
+          valor_usd: number | null
+        }
+        Insert: {
+          ativo?: boolean | null
+          created_at?: string | null
+          descricao?: string | null
+          id?: string
+          nome: string
+          tipo_preco?: string | null
+          tipo_produto_id: string
+          updated_at?: string | null
+          user_id: string
+          valor_brl?: number | null
+          valor_usd?: number | null
+        }
+        Update: {
+          ativo?: boolean | null
+          created_at?: string | null
+          descricao?: string | null
+          id?: string
+          nome?: string
+          tipo_preco?: string | null
+          tipo_produto_id?: string
+          updated_at?: string | null
+          user_id?: string
+          valor_brl?: number | null
+          valor_usd?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "produtos_tipo_produto_id_fkey"
+            columns: ["tipo_produto_id"]
+            isOneToOne: false
+            referencedRelation: "tipos_produtos"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "produtos_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tipos_produtos: {
+        Row: {
+          ativo: boolean | null
+          created_at: string | null
+          descricao: string | null
+          id: string
+          nome: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          ativo?: boolean | null
+          created_at?: string | null
+          descricao?: string | null
+          id?: string
+          nome: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          ativo?: boolean | null
+          created_at?: string | null
+          descricao?: string | null
+          id?: string
+          nome?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tipos_produtos_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       users: {
         Row: {
           created_at: string | null
@@ -431,6 +609,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      atualizar_precos_kommo: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       calcular_estatisticas_financeiras: {
         Args: { p_user_id: string; p_data_inicio?: string; p_data_fim?: string }
         Returns: {
