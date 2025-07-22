@@ -43,7 +43,6 @@ const financeiroItems = [
 
 const catalogoItems = [
   { title: "Produtos", url: "/produtos", icon: Package },
-  { title: "Tipos de Produtos", url: "/produtos?tab=types", icon: Package },
 ]
 
 const ferramentasItems = [
@@ -51,8 +50,12 @@ const ferramentasItems = [
   { title: "Relatórios", url: "/relatorios", icon: BarChart3 },
 ]
 
-const sistemaItems = [
+const licencasItems = [
   { title: "Licenças", url: "/licencas", icon: Crown },
+  { title: "Relatórios de Licenças", url: "/relatorios-licencas", icon: BarChart3 },
+]
+
+const sistemaItems = [
   { title: "Configurações", url: "/configuracoes", icon: Settings },
 ]
 
@@ -148,6 +151,25 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               {ferramentasItems.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton asChild>
+                    <NavLink to={item.url} className={getNavCls}>
+                      <item.icon className="mr-2 h-4 w-4" />
+                      <span>{item.title}</span>
+                    </NavLink>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        {/* Licenças */}
+        <SidebarGroup className="px-2">
+          <SidebarGroupLabel className="text-sidebar-foreground/70 font-medium">Licenças</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {licencasItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                     <NavLink to={item.url} className={getNavCls}>

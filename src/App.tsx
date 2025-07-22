@@ -18,6 +18,7 @@ import Recurrences from "./pages/Recurrences"
 import Reports from "./pages/Reports"
 import Settings from "./pages/Settings"
 import Licenses from "./pages/Licenses"
+import LicenseReports from "./pages/LicenseReports"
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -132,6 +133,13 @@ function App() {
                 <ProtectedRoute>
                   <AppLayout>
                     <Licenses />
+                  </AppLayout>
+                </ProtectedRoute>
+              } />
+              <Route path="/relatorios-licencas" element={
+                <ProtectedRoute>
+                  <AppLayout>
+                    <LicenseReports />
                   </AppLayout>
                 </ProtectedRoute>
               } />
