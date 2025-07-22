@@ -387,6 +387,45 @@ export type Database = {
         }
         Relationships: []
       }
+      users: {
+        Row: {
+          created_at: string | null
+          email: string
+          id: string
+          id_kommo: string | null
+          last_sign_in: string | null
+          name: string | null
+          role: string | null
+          status: string | null
+          subdominio: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          email: string
+          id: string
+          id_kommo?: string | null
+          last_sign_in?: string | null
+          name?: string | null
+          role?: string | null
+          status?: string | null
+          subdominio?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          email?: string
+          id?: string
+          id_kommo?: string | null
+          last_sign_in?: string | null
+          name?: string | null
+          role?: string | null
+          status?: string | null
+          subdominio?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
