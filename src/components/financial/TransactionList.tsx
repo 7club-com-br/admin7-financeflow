@@ -4,12 +4,14 @@ import { ptBR } from "date-fns/locale"
 import { 
   MoreHorizontal, 
   Edit, 
-  Trash2, 
-  CheckCircle, 
+  Trash2,
+  CheckCircle,
   Eye,
   Filter,
   Search,
-  Download
+  Download,
+  CreditCard,
+  XCircle
 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -21,6 +23,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog"
 import { Skeleton } from "@/components/ui/skeleton"
+import { PaymentSelector } from "@/components/payments/PaymentSelector"
 
 import { FinancialTransaction } from "@/hooks/useFinancialData"
 
@@ -42,6 +45,7 @@ export function TransactionList({
   const [searchTerm, setSearchTerm] = useState("")
   const [statusFilter, setStatusFilter] = useState<string>("all")
   const [typeFilter, setTypeFilter] = useState<string>("all")
+  const [showPayment, setShowPayment] = useState<string | null>(null)
 
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('pt-BR', {
@@ -228,6 +232,13 @@ export function TransactionList({
                             Editar
                           </DropdownMenuItem>
                           
+                          {transaction.status === 'pendente' && transaction.tipo === 'receita' && (
+                            <DropdownMenuItem onClick={() => setShowPayment(transaction.id)}>
+                              <CreditCard className="mr-2 h-4 w-4" />
+                              Processar Pagamento
+                            </DropdownMenuItem>
+                          )}
+
                           {transaction.status === 'pendente' && (
                             <DropdownMenuItem onClick={() => onMarkAsPaid(transaction.id)}>
                               <CheckCircle className="mr-2 h-4 w-4" />
@@ -267,6 +278,41 @@ export function TransactionList({
                 ))}
               </TableBody>
             </Table>
+          </div>
+        )}
+
+        {/* Modal de Pagamento */}
+        {showPayment && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+            <div className="bg-background p-6 rounded-lg max-w-md w-full mx-4">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-lg font-semibold">Processar Pagamento</h3>
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={() => setShowPayment(null)}
+                >
+                  <XCircle className="w-4 h-4" />
+                </Button>
+              </div>
+              {(() => {
+                const transaction = filteredTransactions.find(t => t.id === showPayment)
+                return transaction ? (
+                  <PaymentSelector
+                    amount={transaction.valor}
+                    description={transaction.descricao}
+                    transactionId={transaction.id}
+                    onSuccess={() => {
+                      setShowPayment(null)
+                      // A transação será atualizada via webhook
+                    }}
+                    onError={(error) => {
+                      console.error('Erro no pagamento:', error)
+                    }}
+                  />
+                ) : null
+              })()}
+            </div>
           </div>
         )}
       </CardContent>
