@@ -9,10 +9,10 @@ import {
   BarChart3, 
   Settings,
   TrendingUp,
-  TrendingDown,
   Crown,
   Package,
-  Truck
+  PieChart,
+  Link
 } from "lucide-react"
 import { NavLink, useLocation } from "react-router-dom"
 
@@ -29,44 +29,57 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 
-const principalItems = [
+// Único item para o Dashboard
+const dashboardItems = [
   { title: "Dashboard", url: "/", icon: LayoutDashboard },
-  { title: "Lançamentos", url: "/lancamentos", icon: Receipt },
 ]
 
+// Operações financeiras - incluindo Lançamentos
 const financeiroItems = [
+  { title: "Lançamentos", url: "/lancamentos", icon: Receipt },
+  { title: "Recorrências", url: "/recorrencias", icon: Repeat },
   { title: "Contas Financeiras", url: "/contas", icon: CreditCard },
   { title: "Categorias", url: "/categorias", icon: TrendingUp },
   { title: "Centros de Custo", url: "/centros-custo", icon: Building2 },
-  { title: "Fornecedores", url: "/fornecedores", icon: Users },
-  { title: "Recorrências", url: "/recorrencias", icon: Repeat },
 ]
 
-const catalogoItems = [
+// Fornecedores e catálogo juntos em um grupo mais significativo
+const comercialItems = [
+  { title: "Fornecedores", url: "/fornecedores", icon: Users },
   { title: "Produtos", url: "/produtos", icon: Package },
 ]
 
-const ferramentasItems = [
-  { title: "Relatórios", url: "/relatorios", icon: BarChart3 },
-]
-
-const licencasItems = [
-  { title: "Licenças", url: "/licencas", icon: Crown },
+// Dados e análises juntos
+const analisesItems = [
+  { title: "Relatórios Financeiros", url: "/relatorios", icon: PieChart },
   { title: "Relatórios de Licenças", url: "/relatorios-licencas", icon: BarChart3 },
 ]
 
+// Licenciamento separado conforme solicitado
+const licencasItems = [
+  { title: "Licenças", url: "/licencas", icon: Crown },
+]
+
+// Integrações
+const integracoesItems = [
+  { title: "Integração Kommo", url: "/integracoes/kommo", icon: Link },
+]
+
+// Configurações administrativas
 const sistemaItems = [
   { title: "Configurações", url: "/configuracoes", icon: Settings },
 ]
 
 export function AppSidebar() {
-  const { state } = useSidebar()
+  const { state, setOpen } = useSidebar()
   const location = useLocation()
   const currentPath = location.pathname
 
   const isActive = (path: string) => currentPath === path
   const getNavCls = ({ isActive }: { isActive: boolean }) =>
-    isActive ? "bg-sidebar-accent text-sidebar-accent-foreground font-medium" : "hover:bg-sidebar-accent/50 text-sidebar-foreground"
+    isActive 
+      ? "bg-sidebar-accent text-sidebar-accent-foreground font-medium" 
+      : "hover:bg-sidebar-accent/50 text-sidebar-foreground"
 
   return (
     <Sidebar collapsible="icon" className="border-r border-sidebar-border bg-sidebar">
@@ -80,23 +93,21 @@ export function AppSidebar() {
               className="h-8 w-auto"
             />
             {state === "expanded" && (
-              <div>
-                <h2 className="text-lg font-bold text-sidebar-primary-foreground">7Club</h2>
-                <p className="text-xs text-sidebar-primary-foreground/80">Sistema Financeiro</p>
+              <div className="flex-1">
+                <h2 className="text-lg font-bold text-sidebar-primary-foreground">Admin</h2>
               </div>
             )}
           </div>
         </div>
         
-        {/* Principal */}
-        <SidebarGroup className="px-2">
-          <SidebarGroupLabel className="text-sidebar-foreground/70 font-medium">Principal</SidebarGroupLabel>
+        {/* Dashboard */}
+        <SidebarGroup className="px-2 mt-2">
           <SidebarGroupContent>
             <SidebarMenu>
-              {principalItems.map((item) => (
+              {dashboardItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <NavLink to={item.url} end className={getNavCls}>
+                    <NavLink to={item.url} end={item.url === "/"} className={getNavCls}>
                       <item.icon className="mr-2 h-4 w-4" />
                       <span>{item.title}</span>
                     </NavLink>
@@ -126,12 +137,12 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
 
-        {/* Catálogo */}
+        {/* Comercial */}
         <SidebarGroup className="px-2">
-          <SidebarGroupLabel className="text-sidebar-foreground/70 font-medium">Catálogo</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-sidebar-foreground/70 font-medium">Comercial</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {catalogoItems.map((item) => (
+              {comercialItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                     <NavLink to={item.url} className={getNavCls}>
@@ -145,12 +156,12 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
 
-        {/* Ferramentas */}
+        {/* Análises */}
         <SidebarGroup className="px-2">
-          <SidebarGroupLabel className="text-sidebar-foreground/70 font-medium">Ferramentas</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-sidebar-foreground/70 font-medium">Análises</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {ferramentasItems.map((item) => (
+              {analisesItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                     <NavLink to={item.url} className={getNavCls}>
@@ -170,6 +181,25 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               {licencasItems.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton asChild>
+                    <NavLink to={item.url} className={getNavCls}>
+                      <item.icon className="mr-2 h-4 w-4" />
+                      <span>{item.title}</span>
+                    </NavLink>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        {/* Integrações */}
+        <SidebarGroup className="px-2">
+          <SidebarGroupLabel className="text-sidebar-foreground/70 font-medium">Integrações</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {integracoesItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                     <NavLink to={item.url} className={getNavCls}>
