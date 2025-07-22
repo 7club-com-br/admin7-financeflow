@@ -47,8 +47,12 @@ export function RecentTransactions() {
 
   if (!transactions?.length) {
     return (
-      <div className="text-center py-8 text-muted-foreground">
-        <p>Nenhuma transação encontrada</p>
+      <div className="text-center py-8">
+        <div className="text-4xl mb-4">📝</div>
+        <p className="text-muted-foreground mb-4">Nenhuma transação encontrada</p>
+        <p className="text-sm text-muted-foreground">
+          Comece criando sua primeira receita ou despesa
+        </p>
       </div>
     )
   }

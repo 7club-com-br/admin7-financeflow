@@ -43,7 +43,7 @@ const financeiroItems = [
 
 const catalogoItems = [
   { title: "Produtos", url: "/produtos", icon: Package },
-  { title: "Fornecedores", url: "/fornecedores", icon: Truck },
+  { title: "Tipos de Produtos", url: "/produtos?tab=types", icon: Package },
 ]
 
 const ferramentasItems = [
@@ -109,6 +109,25 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               {financeiroItems.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton asChild>
+                    <NavLink to={item.url} className={getNavCls}>
+                      <item.icon className="mr-2 h-4 w-4" />
+                      <span>{item.title}</span>
+                    </NavLink>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        {/* Catálogo */}
+        <SidebarGroup className="px-2">
+          <SidebarGroupLabel className="text-muted-foreground font-medium">Catálogo</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {catalogoItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                     <NavLink to={item.url} className={getNavCls}>

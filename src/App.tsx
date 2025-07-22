@@ -12,6 +12,7 @@ import Categories from "./pages/Categories"
 import Accounts from "./pages/Accounts"
 import CostCenters from "./pages/CostCenters"
 import Suppliers from "./pages/Suppliers"
+import Products from "./pages/Products"
 import Recurrences from "./pages/Recurrences"
 import Reports from "./pages/Reports"
 import NotFound from "./pages/NotFound";
@@ -85,6 +86,13 @@ function App() {
                 <ProtectedRoute>
                   <AppLayout>
                     <CostCenters />
+                  </AppLayout>
+                </ProtectedRoute>
+              } />
+              <Route path="/produtos" element={
+                <ProtectedRoute>
+                  <AppLayout>
+                    <Products />
                   </AppLayout>
                 </ProtectedRoute>
               } />
