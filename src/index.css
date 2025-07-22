@@ -2,41 +2,87 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
+/* Admin7 Financial System Design System
+   Professional financial dashboard with trust-inspiring colors
+   All colors MUST be HSL format for consistency
 */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Base colors - Clean whites and professional grays */
+    --background: 0 0% 98%;
+    --foreground: 213 31% 10%;
 
+    /* Card system - Subtle depth with clean whites */
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 213 31% 10%;
 
+    /* Popover system */
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 213 31% 10%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Primary - Deep professional blue for trust and stability */
+    --primary: 213 94% 18%;
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 213 94% 25%;
+    --primary-light: 213 94% 95%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Secondary - Soft blue-gray for supporting elements */
+    --secondary: 213 27% 84%;
+    --secondary-foreground: 213 31% 10%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Muted - Subtle backgrounds and disabled states */
+    --muted: 213 27% 92%;
+    --muted-foreground: 213 10% 45%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Accent - Success green for positive financial indicators */
+    --accent: 142 76% 36%;
+    --accent-foreground: 0 0% 100%;
+    --accent-light: 142 76% 95%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    /* Success - Bright green for gains and positive values */
+    --success: 120 100% 25%;
+    --success-foreground: 0 0% 100%;
+    --success-light: 120 60% 95%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    /* Warning - Amber for alerts and pending items */
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 100%;
+    --warning-light: 38 92% 95%;
 
-    --radius: 0.5rem;
+    /* Destructive - Red for losses and negative values */
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Borders and inputs */
+    --border: 213 27% 84%;
+    --input: 213 27% 84%;
+    --ring: 213 94% 18%;
+
+    /* Financial specific colors */
+    --income: 120 100% 25%;
+    --income-foreground: 0 0% 100%;
+    --income-light: 120 60% 95%;
+    
+    --expense: 0 84% 60%;
+    --expense-foreground: 0 0% 100%;
+    --expense-light: 0 84% 95%;
+
+    /* Gradients for modern financial interface */
+    --gradient-primary: linear-gradient(135deg, hsl(213 94% 18%), hsl(213 94% 25%));
+    --gradient-success: linear-gradient(135deg, hsl(120 100% 25%), hsl(142 76% 36%));
+    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%), hsl(213 27% 98%));
+    --gradient-hero: linear-gradient(135deg, hsl(213 94% 18%), hsl(213 94% 35%));
+
+    /* Shadows for depth */
+    --shadow-sm: 0 1px 2px 0 hsl(213 31% 10% / 0.05);
+    --shadow-md: 0 4px 6px -1px hsl(213 31% 10% / 0.1);
+    --shadow-lg: 0 10px 15px -3px hsl(213 31% 10% / 0.1);
+    --shadow-financial: 0 8px 25px -5px hsl(213 94% 18% / 0.15);
+
+    /* Animation values */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --radius: 0.75rem;
 
     --sidebar-background: 0 0% 98%;
 
