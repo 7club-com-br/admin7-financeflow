@@ -28,14 +28,21 @@ export interface LicensePlan {
 }
 
 export function useLicense() {
+  console.log('[useLicense] Hook iniciado');
+  
   const { user } = useAuth();
+  console.log('[useLicense] User:', user?.email || 'nenhum');
+  
   const [license, setLicense] = useState<LicenseInfo | null>(null);
   const [plans, setPlans] = useState<LicensePlan[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const fetchLicenseStatus = async () => {
+    console.log('[useLicense] fetchLicenseStatus chamado, user:', !!user);
+    
     if (!user) {
+      console.log('[useLicense] Sem usuário, parando loading');
       setLoading(false);
       return;
     }
@@ -130,9 +137,14 @@ export function useLicense() {
   };
 
   useEffect(() => {
+    console.log('[useLicense] useEffect executado, user:', !!user);
     if (user) {
+      console.log('[useLicense] Chamando fetchLicenseStatus e fetchPlans');
       fetchLicenseStatus();
       fetchPlans();
+    } else {
+      console.log('[useLicense] Sem user, setando loading false');
+      setLoading(false);
     }
   }, [user]);
 
