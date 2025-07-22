@@ -39,6 +39,7 @@ const financeiroItems = [
   { title: "Categorias", url: "/categorias", icon: TrendingUp },
   { title: "Centros de Custo", url: "/centros-custo", icon: Building2 },
   { title: "Fornecedores", url: "/fornecedores", icon: Users },
+  { title: "Recorrências", url: "/recorrencias", icon: Repeat },
 ]
 
 const catalogoItems = [
@@ -46,7 +47,6 @@ const catalogoItems = [
 ]
 
 const ferramentasItems = [
-  { title: "Recorrências", url: "/recorrencias", icon: Repeat },
   { title: "Relatórios", url: "/relatorios", icon: BarChart3 },
 ]
 
