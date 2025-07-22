@@ -12,6 +12,7 @@ import Categories from "./pages/Categories"
 import Accounts from "./pages/Accounts"
 import CostCenters from "./pages/CostCenters"
 import Suppliers from "./pages/Suppliers"
+import Recurrences from "./pages/Recurrences"
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -83,6 +84,13 @@ function App() {
                 <ProtectedRoute>
                   <AppLayout>
                     <Suppliers />
+                  </AppLayout>
+                </ProtectedRoute>
+              } />
+              <Route path="/recorrencias" element={
+                <ProtectedRoute>
+                  <AppLayout>
+                    <Recurrences />
                   </AppLayout>
                 </ProtectedRoute>
               } />
