@@ -13,6 +13,7 @@ import Accounts from "./pages/Accounts"
 import CostCenters from "./pages/CostCenters"
 import Suppliers from "./pages/Suppliers"
 import Recurrences from "./pages/Recurrences"
+import Reports from "./pages/Reports"
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -91,6 +92,13 @@ function App() {
                 <ProtectedRoute>
                   <AppLayout>
                     <Recurrences />
+                  </AppLayout>
+                </ProtectedRoute>
+              } />
+              <Route path="/relatorios" element={
+                <ProtectedRoute>
+                  <AppLayout>
+                    <Reports />
                   </AppLayout>
                 </ProtectedRoute>
               } />

@@ -77,9 +77,10 @@ export const useRecurrences = () => {
         .from('financeiro_recorrencias')
         .insert(recurrenceWithUserId)
         .select()
-        .single()
+        .maybeSingle()
 
       if (error) throw error
+      if (!data) throw new Error('Erro ao criar recorrência')
       return data
     },
     onSuccess: () => {
@@ -105,9 +106,10 @@ export const useRecurrences = () => {
         .update(updates)
         .eq('id', id)
         .select()
-        .single()
+        .maybeSingle()
 
       if (error) throw error
+      if (!data) throw new Error('Recorrência não encontrada')
       return data
     },
     onSuccess: () => {
@@ -158,9 +160,10 @@ export const useRecurrences = () => {
         .update({ ativa })
         .eq('id', id)
         .select()
-        .single()
+        .maybeSingle()
 
       if (error) throw error
+      if (!data) throw new Error('Recorrência não encontrada')
       return data
     },
     onSuccess: () => {
