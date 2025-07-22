@@ -1,10 +1,12 @@
-import { Plus, FileText, TrendingUp, Users, Package } from "lucide-react";
+import { Plus, FileText, TrendingUp, Users, Package, Database } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
+import { useDemoData } from "@/hooks/useDemoData";
 
 export function QuickActions() {
   const navigate = useNavigate();
+  const { createDemoData, isCreating } = useDemoData();
 
   const actions = [
     {
@@ -29,11 +31,11 @@ export function QuickActions() {
       action: () => navigate("/fornecedores")
     },
     {
-      title: "Produto",
-      description: "Adicionar novo produto",
-      icon: Package,
+      title: "Dados Demo",
+      description: "Criar dados de exemplo",
+      icon: Database,
       color: "text-purple-600", 
-      action: () => navigate("/produtos")
+      action: () => createDemoData()
     }
   ];
 
@@ -51,8 +53,9 @@ export function QuickActions() {
             <Button
               key={index}
               variant="outline"
-              className="h-auto p-4 flex flex-col items-center gap-2 hover:shadow-md transition-all"
+              className="h-auto p-4 flex flex-col items-center gap-2 hover:shadow-md transition-all disabled:opacity-50"
               onClick={action.action}
+              disabled={action.title === "Dados Demo" && isCreating}
             >
               <action.icon className={`h-8 w-8 ${action.color}`} />
               <div className="text-center">

@@ -15,6 +15,7 @@ import Suppliers from "./pages/Suppliers"
 import Products from "./pages/Products"
 import Recurrences from "./pages/Recurrences"
 import Reports from "./pages/Reports"
+import Settings from "./pages/Settings"
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -114,6 +115,13 @@ function App() {
                 <ProtectedRoute>
                   <AppLayout>
                     <Reports />
+                  </AppLayout>
+                </ProtectedRoute>
+              } />
+              <Route path="/configuracoes" element={
+                <ProtectedRoute>
+                  <AppLayout>
+                    <Settings />
                   </AppLayout>
                 </ProtectedRoute>
               } />
