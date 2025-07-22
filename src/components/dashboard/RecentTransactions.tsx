@@ -1,138 +1,78 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { ArrowUpDown, Plus } from 'lucide-react';
-import { format } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
+import { useQuery } from "@tanstack/react-query"
+import { supabase } from "@/integrations/supabase/client"
+import { useAuth } from "@/contexts/AuthContext"
+import { Badge } from "@/components/ui/badge"
+import { Skeleton } from "@/components/ui/skeleton"
 
-interface Transaction {
-  id: string;
-  descricao: string;
-  valor: number;
-  tipo: 'receita' | 'despesa';
-  status: 'pendente' | 'pago' | 'cancelado' | 'atrasado';
-  data_vencimento: string;
-  categoria: {
-    nome: string;
-    cor: string;
-  };
-}
+export function RecentTransactions() {
+  const { user } = useAuth()
+  
+  const { data: transactions, isLoading } = useQuery({
+    queryKey: ['recent-transactions', user?.id],
+    queryFn: async () => {
+      if (!user?.id) return []
+      
+      const { data, error } = await supabase
+        .from('financeiro_lancamentos')
+        .select(`
+          id,
+          descricao,
+          valor,
+          tipo,
+          status,
+          data_vencimento,
+          financeiro_categorias!categoria_id (
+            nome,
+            cor
+          )
+        `)
+        .order('created_at', { ascending: false })
+        .limit(5)
 
-interface RecentTransactionsProps {
-  transactions: Transaction[];
-}
+      if (error) throw error
+      return data || []
+    },
+    enabled: !!user?.id
+  })
 
-export function RecentTransactions({ transactions }: RecentTransactionsProps) {
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('pt-BR', {
-      style: 'currency',
-      currency: 'BRL',
-    }).format(value);
-  };
+  if (isLoading) {
+    return (
+      <div className="space-y-4">
+        {[...Array(5)].map((_, i) => (
+          <Skeleton key={i} className="h-16 w-full" />
+        ))}
+      </div>
+    )
+  }
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'pago':
-        return 'bg-success/10 text-success hover:bg-success/20';
-      case 'pendente':
-        return 'bg-warning/10 text-warning hover:bg-warning/20';
-      case 'atrasado':
-        return 'bg-expense/10 text-expense hover:bg-expense/20';
-      case 'cancelado':
-        return 'bg-muted text-muted-foreground';
-      default:
-        return 'bg-muted text-muted-foreground';
-    }
-  };
-
-  const getStatusLabel = (status: string) => {
-    switch (status) {
-      case 'pago':
-        return 'Pago';
-      case 'pendente':
-        return 'Pendente';
-      case 'atrasado':
-        return 'Atrasado';
-      case 'cancelado':
-        return 'Cancelado';
-      default:
-        return status;
-    }
-  };
+  if (!transactions?.length) {
+    return (
+      <div className="text-center py-8 text-muted-foreground">
+        <p>Nenhuma transação encontrada</p>
+      </div>
+    )
+  }
 
   return (
-    <Card className="bg-gradient-card border-border/50 shadow-financial">
-      <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle className="text-lg font-semibold">Lançamentos Recentes</CardTitle>
-        <div className="flex space-x-2">
-          <Button variant="outline" size="sm">
-            <ArrowUpDown className="h-4 w-4 mr-2" />
-            Ver Todos
-          </Button>
-          <Button size="sm" className="bg-gradient-primary">
-            <Plus className="h-4 w-4 mr-2" />
-            Novo Lançamento
-          </Button>
+    <div className="space-y-4">
+      {transactions.map((transaction: any) => (
+        <div key={transaction.id} className="flex items-center justify-between p-4 border rounded-lg">
+          <div className="space-y-1">
+            <p className="font-medium">{transaction.descricao}</p>
+            <p className="text-sm text-muted-foreground">
+              {new Date(transaction.data_vencimento).toLocaleDateString('pt-BR')}
+            </p>
+          </div>
+          <div className="text-right">
+            <p className={`font-medium ${
+              transaction.tipo === 'receita' ? 'text-green-600' : 'text-red-600'
+            }`}>
+              {transaction.tipo === 'receita' ? '+' : '-'} R$ {transaction.valor}
+            </p>
+            <Badge variant="secondary">{transaction.status}</Badge>
+          </div>
         </div>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-4">
-          {transactions.length === 0 ? (
-            <div className="text-center py-12 text-muted-foreground">
-              <div className="mb-4">
-                <ArrowUpDown className="h-12 w-12 mx-auto opacity-50" />
-              </div>
-              <h3 className="text-lg font-medium mb-2">Nenhum lançamento encontrado</h3>
-              <p className="text-sm">Comece criando seu primeiro lançamento financeiro.</p>
-              <Button className="mt-4 bg-gradient-primary">
-                <Plus className="h-4 w-4 mr-2" />
-                Criar Primeiro Lançamento
-              </Button>
-            </div>
-          ) : (
-            transactions.map((transaction) => (
-              <div
-                key={transaction.id}
-                className="flex items-center justify-between p-4 rounded-lg bg-background/50 border border-border/50"
-              >
-                <div className="flex items-center space-x-3">
-                  <div
-                    className="w-3 h-3 rounded-full"
-                    style={{ backgroundColor: transaction.categoria.cor }}
-                  />
-                  <div>
-                    <p className="font-medium text-foreground">
-                      {transaction.descricao}
-                    </p>
-                    <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-                      <span>{transaction.categoria.nome}</span>
-                      <span>•</span>
-                      <span>
-                        {format(new Date(transaction.data_vencimento), "dd/MM/yyyy", {
-                          locale: ptBR,
-                        })}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <Badge variant="secondary" className={getStatusColor(transaction.status)}>
-                    {getStatusLabel(transaction.status)}
-                  </Badge>
-                  <span
-                    className={`font-semibold ${
-                      transaction.tipo === 'receita' ? 'text-income' : 'text-expense'
-                    }`}
-                  >
-                    {transaction.tipo === 'receita' ? '+' : '-'}
-                    {formatCurrency(Math.abs(transaction.valor))}
-                  </span>
-                </div>
-              </div>
-            ))
-          )}
-        </div>
-      </CardContent>
-    </Card>
-  );
+      ))}
+    </div>
+  )
 }

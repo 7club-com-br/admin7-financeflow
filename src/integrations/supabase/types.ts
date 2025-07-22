@@ -431,8 +431,24 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      calcular_estatisticas_financeiras: {
+        Args: { p_user_id: string; p_data_inicio?: string; p_data_fim?: string }
+        Returns: {
+          total_receitas: number
+          total_despesas: number
+          saldo_periodo: number
+          receitas_pagas: number
+          despesas_pagas: number
+          receitas_pendentes: number
+          despesas_pendentes: number
+        }[]
+      }
       exec_sql: {
         Args: { sql_query: string }
+        Returns: undefined
+      }
+      gerar_lancamentos_recorrencias: {
+        Args: Record<PropertyKey, never>
         Returns: undefined
       }
     }
