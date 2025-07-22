@@ -32,7 +32,16 @@ export function AppLayout({ children }: AppLayoutProps) {
           <header className="h-14 border-b bg-background flex items-center justify-between px-4">
             <div className="flex items-center gap-2">
               <SidebarTrigger />
-              <h1 className="text-lg font-semibold">Admin7 - Sistema Financeiro</h1>
+              <div className="flex items-center gap-2">
+                <img 
+                  src="/lovable-uploads/845de12e-ad02-47ec-ab1e-579893db3008.png" 
+                  alt="7Club Logo" 
+                  className="h-6 w-auto"
+                />
+                <h1 className="text-lg font-semibold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                  7Club Financial
+                </h1>
+              </div>
             </div>
             
             <div className="flex items-center gap-3">
