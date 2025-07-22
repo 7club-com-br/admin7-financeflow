@@ -52,6 +52,7 @@ const ferramentasItems = [
 ]
 
 const sistemaItems = [
+  { title: "Licenças", url: "/licencas", icon: Crown },
   { title: "Configurações", url: "/configuracoes", icon: Settings },
 ]
 

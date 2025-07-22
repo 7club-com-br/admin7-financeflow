@@ -272,3 +272,5 @@ export function Licenses() {
     </div>
   );
 }
+
+export default Licenses;
