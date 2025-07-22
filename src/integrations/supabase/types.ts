@@ -414,53 +414,148 @@ export type Database = {
         }
         Relationships: []
       }
+      historico_licencas: {
+        Row: {
+          acao: string
+          created_at: string | null
+          data_anterior: string | null
+          data_nova: string | null
+          id: string
+          licenca_id: string | null
+          metodo_pagamento: string | null
+          observacoes: string | null
+          plano_id: string | null
+          user_id: string
+          valor_pago: number | null
+        }
+        Insert: {
+          acao: string
+          created_at?: string | null
+          data_anterior?: string | null
+          data_nova?: string | null
+          id?: string
+          licenca_id?: string | null
+          metodo_pagamento?: string | null
+          observacoes?: string | null
+          plano_id?: string | null
+          user_id: string
+          valor_pago?: number | null
+        }
+        Update: {
+          acao?: string
+          created_at?: string | null
+          data_anterior?: string | null
+          data_nova?: string | null
+          id?: string
+          licenca_id?: string | null
+          metodo_pagamento?: string | null
+          observacoes?: string | null
+          plano_id?: string | null
+          user_id?: string
+          valor_pago?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "historico_licencas_licenca_id_fkey"
+            columns: ["licenca_id"]
+            isOneToOne: false
+            referencedRelation: "licencas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "historico_licencas_plano_id_fkey"
+            columns: ["plano_id"]
+            isOneToOne: false
+            referencedRelation: "planos_licenca"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "historico_licencas_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       licencas: {
         Row: {
           ativa: boolean | null
+          bloqueada: boolean | null
           chave_ativacao: string | null
+          chave_licenca: string | null
           created_at: string | null
+          data_ativacao: string | null
           data_inicio: string
+          data_ultimo_uso: string | null
           data_vencimento: string
           id: string
           limite_lancamentos: number | null
           limite_produtos: number | null
           limite_usuarios: number | null
+          motivo_bloqueio: string | null
+          plano_id: string | null
           recursos_liberados: Json | null
+          status: string | null
+          tentativas_uso: number | null
           tipo_plano: string
           updated_at: string | null
           user_id: string
         }
         Insert: {
           ativa?: boolean | null
+          bloqueada?: boolean | null
           chave_ativacao?: string | null
+          chave_licenca?: string | null
           created_at?: string | null
+          data_ativacao?: string | null
           data_inicio?: string
+          data_ultimo_uso?: string | null
           data_vencimento: string
           id?: string
           limite_lancamentos?: number | null
           limite_produtos?: number | null
           limite_usuarios?: number | null
+          motivo_bloqueio?: string | null
+          plano_id?: string | null
           recursos_liberados?: Json | null
+          status?: string | null
+          tentativas_uso?: number | null
           tipo_plano?: string
           updated_at?: string | null
           user_id: string
         }
         Update: {
           ativa?: boolean | null
+          bloqueada?: boolean | null
           chave_ativacao?: string | null
+          chave_licenca?: string | null
           created_at?: string | null
+          data_ativacao?: string | null
           data_inicio?: string
+          data_ultimo_uso?: string | null
           data_vencimento?: string
           id?: string
           limite_lancamentos?: number | null
           limite_produtos?: number | null
           limite_usuarios?: number | null
+          motivo_bloqueio?: string | null
+          plano_id?: string | null
           recursos_liberados?: Json | null
+          status?: string | null
+          tentativas_uso?: number | null
           tipo_plano?: string
           updated_at?: string | null
           user_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "licencas_plano_id_fkey"
+            columns: ["plano_id"]
+            isOneToOne: false
+            referencedRelation: "planos_licenca"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "licencas_user_id_fkey"
             columns: ["user_id"]
@@ -469,6 +564,57 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      planos_licenca: {
+        Row: {
+          ativo: boolean | null
+          created_at: string | null
+          duracao_meses: number
+          id: string
+          limite_lancamentos: number | null
+          limite_produtos: number | null
+          limite_usuarios: number | null
+          nome: string
+          periodo_trial_dias: number | null
+          recursos_liberados: Json | null
+          tipo: string
+          updated_at: string | null
+          valor_brl: number | null
+          valor_usd: number | null
+        }
+        Insert: {
+          ativo?: boolean | null
+          created_at?: string | null
+          duracao_meses?: number
+          id?: string
+          limite_lancamentos?: number | null
+          limite_produtos?: number | null
+          limite_usuarios?: number | null
+          nome: string
+          periodo_trial_dias?: number | null
+          recursos_liberados?: Json | null
+          tipo: string
+          updated_at?: string | null
+          valor_brl?: number | null
+          valor_usd?: number | null
+        }
+        Update: {
+          ativo?: boolean | null
+          created_at?: string | null
+          duracao_meses?: number
+          id?: string
+          limite_lancamentos?: number | null
+          limite_produtos?: number | null
+          limite_usuarios?: number | null
+          nome?: string
+          periodo_trial_dias?: number | null
+          recursos_liberados?: Json | null
+          tipo?: string
+          updated_at?: string | null
+          valor_brl?: number | null
+          valor_usd?: number | null
+        }
+        Relationships: []
       }
       produtos: {
         Row: {
@@ -609,6 +755,15 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      ativar_licenca: {
+        Args: {
+          p_user_id: string
+          p_plano_id: string
+          p_chave_licenca?: string
+          p_meses_adicionais?: number
+        }
+        Returns: boolean
+      }
       atualizar_precos_kommo: {
         Args: Record<PropertyKey, never>
         Returns: undefined
@@ -632,6 +787,18 @@ export type Database = {
       gerar_lancamentos_recorrencias: {
         Args: Record<PropertyKey, never>
         Returns: undefined
+      }
+      verificar_status_licenca: {
+        Args: { p_user_id: string }
+        Returns: {
+          status: string
+          dias_restantes: number
+          limite_usuarios: number
+          limite_lancamentos: number
+          limite_produtos: number
+          recursos_liberados: Json
+          plano_nome: string
+        }[]
       }
     }
     Enums: {

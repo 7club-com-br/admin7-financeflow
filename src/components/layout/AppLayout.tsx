@@ -2,6 +2,7 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { AppSidebar } from "./AppSidebar"
 import { Button } from "@/components/ui/button"
 import { useAuth } from "@/contexts/AuthContext"
+import { LicenseStatus } from "@/components/license/LicenseStatus"
 import { User, LogOut } from "lucide-react"
 import {
   DropdownMenu,
@@ -34,7 +35,8 @@ export function AppLayout({ children }: AppLayoutProps) {
               <h1 className="text-lg font-semibold">Admin7 - Sistema Financeiro</h1>
             </div>
             
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
+              <LicenseStatus />
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" size="sm" className="flex items-center gap-2">

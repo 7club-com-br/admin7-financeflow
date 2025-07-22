@@ -14,6 +14,7 @@ import CostCenters from "./pages/CostCenters"
 import Suppliers from "./pages/Suppliers"
 import Recurrences from "./pages/Recurrences"
 import Reports from "./pages/Reports"
+import { Licenses } from "./pages/Licenses"
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -99,6 +100,13 @@ function App() {
                 <ProtectedRoute>
                   <AppLayout>
                     <Reports />
+                  </AppLayout>
+                </ProtectedRoute>
+              } />
+              <Route path="/licencas" element={
+                <ProtectedRoute>
+                  <AppLayout>
+                    <Licenses />
                   </AppLayout>
                 </ProtectedRoute>
               } />

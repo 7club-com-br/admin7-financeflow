@@ -9,7 +9,8 @@ import {
   BarChart3, 
   Settings,
   TrendingUp,
-  TrendingDown
+  TrendingDown,
+  Crown
 } from "lucide-react"
 import { NavLink, useLocation } from "react-router-dom"
 
@@ -41,6 +42,7 @@ const cadastrosItems = [
 const ferramentasItems = [
   { title: "Recorrências", url: "/recorrencias", icon: Repeat },
   { title: "Relatórios", url: "/relatorios", icon: BarChart3 },
+  { title: "Licenças", url: "/licencas", icon: Crown },
 ]
 
 const configItems = [
