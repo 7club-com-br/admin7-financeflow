@@ -65,9 +65,17 @@ export const useRecurrences = () => {
 
   const createRecurrence = useMutation({
     mutationFn: async (newRecurrence: CreateRecurrenceData) => {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) throw new Error('Usuário não autenticado')
+
+      const recurrenceWithUserId = {
+        ...newRecurrence,
+        user_id: user.id
+      }
+
       const { data, error } = await supabase
         .from('financeiro_recorrencias')
-        .insert(newRecurrence)
+        .insert(recurrenceWithUserId)
         .select()
         .single()
 
