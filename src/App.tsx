@@ -19,8 +19,8 @@ import Reports from "./pages/Reports"
 import Settings from "./pages/Settings"
 import Licenses from "./pages/Licenses"
 import LicenseReports from "./pages/LicenseReports"
-import OAuthCallback from "./pages/OAuthCallback"
 import KommoIntegration from "./pages/KommoIntegration"
+import Checkout from "./pages/Checkout"
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -152,7 +152,13 @@ function App() {
                   </AppLayout>
                 </ProtectedRoute>
               } />
-              <Route path="/oauth/callback" element={<OAuthCallback />} />
+              <Route path="/checkout" element={
+                <ProtectedRoute>
+                  <AppLayout>
+                    <Checkout />
+                  </AppLayout>
+                </ProtectedRoute>
+              } />
               <Route path="*" element={<NotFound />} />
             </Routes>
             </BrowserRouter>

@@ -9,11 +9,10 @@ import { useToast } from '../../hooks/use-toast';
 
 type User = Tables<'users'>;
 type License = Tables<'licencas'>;
-type OAuthCredential = Tables<'oauth_credentials'>;
 
 export function KommoIntegrationManager() {
   const [loading, setLoading] = useState(true);
-  const [kommoUsers, setKommoUsers] = useState<(User & { licenca?: License, credential?: OAuthCredential })[]>([]);
+  const [kommoUsers, setKommoUsers] = useState<(User & { licenca?: License })[]>([]);
   const [refreshing, setRefreshing] = useState(false);
   const { toast } = useToast();
 
@@ -23,51 +22,34 @@ export function KommoIntegrationManager() {
       setLoading(true);
       
       // Buscar usuários com ID Kommo
-      const { data: users, error } = await supabase
+      const { data: kommoUsersData, error } = await supabase
         .from('users')
         .select('*')
         .not('id_kommo', 'is', null);
         
       if (error) throw error;
       
-      if (!users || users.length === 0) {
+      if (!kommoUsersData || kommoUsersData.length === 0) {
         setKommoUsers([]);
         return;
       }
       
-      // Para cada usuário, buscar a licença e credencial OAuth
-      const usersWithData = await Promise.all(users.map(async (user) => {
-        // Buscar licença do usuário
-        const { data: licencas } = await supabase
-          .from('licencas')
-          .select('*')
-          .eq('user_id', user.id)
-          .order('created_at', { ascending: false })
-          .limit(1);
-          
-        const licenca = licencas && licencas.length > 0 ? licencas[0] : undefined;
-        
-        // Se tiver licença, buscar credencial OAuth
-        let credential;
-        if (licenca) {
-          const { data: credentials } = await supabase
-            .from('oauth_credentials')
-            .select('*')
-            .eq('licenca_id', licenca.id)
-            .eq('user_id', user.id)
-            .order('created_at', { ascending: false })
-            .limit(1);
-            
-          credential = credentials && credentials.length > 0 ? credentials[0] : undefined;
-        }
-        
+      // Buscar licenças para esses usuários
+      const userIds = kommoUsersData.map(user => user.id);
+      const { data: licenses } = await supabase
+        .from('licencas')
+        .select('*')
+        .in('user_id', userIds);
+      
+      // Combinar dados
+      const usersWithData = kommoUsersData.map(user => {
+        const licenca = licenses?.find(l => l.user_id === user.id);
         return {
           ...user,
-          licenca,
-          credential
+          licenca
         };
-      }));
-      
+      });
+
       setKommoUsers(usersWithData);
     } catch (error: any) {
       toast({
@@ -81,35 +63,20 @@ export function KommoIntegrationManager() {
   };
   
   // Função para atualizar manualmente os tokens
-  const refreshTokens = async (credentialId: string) => {
+  const refreshTokens = async () => {
     try {
       setRefreshing(true);
-      
-      // Chamar a função Edge para atualizar o token
-      const response = await fetch(`${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/kommo-refresh-tokens`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY}`,
-        },
-        body: JSON.stringify({ credential_id: credentialId })
-      });
-      
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Erro ao atualizar token');
-      }
       
       // Recarregar dados
       await loadKommoUsers();
       
       toast({
-        title: 'Token atualizado',
-        description: 'O token de acesso foi atualizado com sucesso',
+        title: 'Dados atualizados',
+        description: 'Os dados foram atualizados com sucesso',
       });
     } catch (error: any) {
       toast({
-        title: 'Erro ao atualizar token',
+        title: 'Erro ao atualizar dados',
         description: error.message,
         variant: 'destructive',
       });
@@ -124,7 +91,7 @@ export function KommoIntegrationManager() {
     const redirectUri = encodeURIComponent(baseUrl);
     
     // Obter client_id do serviço OAuth Kommo da sua aplicação
-    const clientId = process.env.NEXT_PUBLIC_KOMMO_CLIENT_ID;
+    const clientId = process.env.NEXT_PUBLIC_KOMMO_CLIENT_ID || 'your-kommo-client-id';
     
     return `https://www.kommo.com/oauth?client_id=${clientId}&mode=post_message&redirect_uri=${redirectUri}&state=kommo-integration`;
   };
@@ -182,17 +149,11 @@ export function KommoIntegrationManager() {
                   <div>
                     <div className="flex items-center gap-2 mb-2">
                       <h3 className="font-medium">{user.name || 'Sem nome'}</h3>
-                      {user.credential ? (
-                        <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
-                          <CheckCircle className="mr-1 h-3 w-3" /> Conectado
-                        </Badge>
-                      ) : (
-                        <Badge variant="outline" className="bg-red-50 text-red-700 border-red-200">
-                          <XCircle className="mr-1 h-3 w-3" /> Desconectado
-                        </Badge>
-                      )}
+                      <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
+                        <CheckCircle className="mr-1 h-3 w-3" /> Kommo
+                      </Badge>
                       {user.licenca && (
-                        <Badge variant={user.licenca.ativa ? 'outline' : 'destructive'} className={user.licenca.ativa ? 'bg-blue-50 text-blue-700 border-blue-200' : ''}>
+                        <Badge variant={user.licenca.ativa ? 'outline' : 'destructive'} className={user.licenca.ativa ? 'bg-green-50 text-green-700 border-green-200' : ''}>
                           {user.licenca.status || 'Sem status'}
                         </Badge>
                       )}
@@ -208,23 +169,20 @@ export function KommoIntegrationManager() {
                           <p>Plano: {user.licenca.tipo_plano}</p>
                         </>
                       )}
-                      {user.credential && (
-                        <p>Token expira em: {new Date(user.credential.expires_at).toLocaleDateString('pt-BR')} às {new Date(user.credential.expires_at).toLocaleTimeString('pt-BR')}</p>
-                      )}
+                      <p className="text-sm text-muted-foreground">Integração OAuth não implementada</p>
                     </div>
                   </div>
-                  
-                  {user.credential && (
+                  <div className="flex gap-2">
                     <Button 
                       variant="outline" 
                       size="sm"
-                      onClick={() => refreshTokens(user.credential!.id)}
+                      onClick={refreshTokens}
                       disabled={refreshing}
                     >
                       {refreshing ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <RefreshCw className="mr-2 h-4 w-4" />}
-                      Atualizar Token
+                      Atualizar
                     </Button>
-                  )}
+                  </div>
                 </div>
               </div>
             ))}
