@@ -6,7 +6,8 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { AuthForm } from "@/components/auth/AuthForm";
 import { AppLayout } from "@/components/layout/AppLayout";
-import Index from "./pages/Index";
+import Index from "./pages/Index"
+import Transactions from "./pages/Transactions"
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -43,6 +44,13 @@ function App() {
                 <ProtectedRoute>
                   <AppLayout>
                     <Index />
+                  </AppLayout>
+                </ProtectedRoute>
+              } />
+              <Route path="/lancamentos" element={
+                <ProtectedRoute>
+                  <AppLayout>
+                    <Transactions />
                   </AppLayout>
                 </ProtectedRoute>
               } />
