@@ -8,6 +8,10 @@ import { AuthForm } from "@/components/auth/AuthForm";
 import { AppLayout } from "@/components/layout/AppLayout";
 import Index from "./pages/Index"
 import Transactions from "./pages/Transactions"
+import Categories from "./pages/Categories"
+import Accounts from "./pages/Accounts"
+import CostCenters from "./pages/CostCenters"
+import Suppliers from "./pages/Suppliers"
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -51,6 +55,34 @@ function App() {
                 <ProtectedRoute>
                   <AppLayout>
                     <Transactions />
+                  </AppLayout>
+                </ProtectedRoute>
+              } />
+              <Route path="/categorias" element={
+                <ProtectedRoute>
+                  <AppLayout>
+                    <Categories />
+                  </AppLayout>
+                </ProtectedRoute>
+              } />
+              <Route path="/contas" element={
+                <ProtectedRoute>
+                  <AppLayout>
+                    <Accounts />
+                  </AppLayout>
+                </ProtectedRoute>
+              } />
+              <Route path="/centros-custo" element={
+                <ProtectedRoute>
+                  <AppLayout>
+                    <CostCenters />
+                  </AppLayout>
+                </ProtectedRoute>
+              } />
+              <Route path="/fornecedores" element={
+                <ProtectedRoute>
+                  <AppLayout>
+                    <Suppliers />
                   </AppLayout>
                 </ProtectedRoute>
               } />
