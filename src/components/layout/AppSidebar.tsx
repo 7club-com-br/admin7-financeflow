@@ -62,13 +62,13 @@ export function AppSidebar() {
 
   const isActive = (path: string) => currentPath === path
   const getNavCls = ({ isActive }: { isActive: boolean }) =>
-    isActive ? "bg-accent text-accent-foreground font-medium" : "hover:bg-accent/50"
+    isActive ? "bg-primary text-primary-foreground font-medium" : "hover:bg-primary/10 text-foreground"
 
   return (
-    <Sidebar collapsible="icon" className="border-r">
-      <SidebarContent>
+    <Sidebar collapsible="icon" className="border-r bg-card">
+      <SidebarContent className="bg-card">
         {/* Logo/Brand */}
-        <div className="p-4 border-b bg-gradient-to-r from-blue-600 to-purple-600">
+        <div className="p-4 border-b bg-gradient-primary">
           <div className="flex items-center gap-3">
             <img 
               src="/lovable-uploads/845de12e-ad02-47ec-ab1e-579893db3008.png" 
@@ -78,15 +78,15 @@ export function AppSidebar() {
             {state === "expanded" && (
               <div>
                 <h2 className="text-lg font-bold text-white">7Club</h2>
-                <p className="text-xs text-blue-100">Sistema Financeiro</p>
+                <p className="text-xs text-white/80">Sistema Financeiro</p>
               </div>
             )}
           </div>
         </div>
         
         {/* Principal */}
-        <SidebarGroup>
-          <SidebarGroupLabel>Principal</SidebarGroupLabel>
+        <SidebarGroup className="px-2">
+          <SidebarGroupLabel className="text-muted-foreground font-medium">Principal</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {principalItems.map((item) => (
@@ -104,8 +104,8 @@ export function AppSidebar() {
         </SidebarGroup>
 
         {/* Financeiro */}
-        <SidebarGroup>
-          <SidebarGroupLabel>Financeiro</SidebarGroupLabel>
+        <SidebarGroup className="px-2">
+          <SidebarGroupLabel className="text-muted-foreground font-medium">Financeiro</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {financeiroItems.map((item) => (
@@ -123,8 +123,8 @@ export function AppSidebar() {
         </SidebarGroup>
 
         {/* Ferramentas */}
-        <SidebarGroup>
-          <SidebarGroupLabel>Ferramentas</SidebarGroupLabel>
+        <SidebarGroup className="px-2">
+          <SidebarGroupLabel className="text-muted-foreground font-medium">Ferramentas</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {ferramentasItems.map((item) => (
@@ -142,8 +142,8 @@ export function AppSidebar() {
         </SidebarGroup>
 
         {/* Sistema */}
-        <SidebarGroup>
-          <SidebarGroupLabel>Sistema</SidebarGroupLabel>
+        <SidebarGroup className="px-2">
+          <SidebarGroupLabel className="text-muted-foreground font-medium">Sistema</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {sistemaItems.map((item) => (
