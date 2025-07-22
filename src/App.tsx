@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
+import { LicenseProvider } from "@/contexts/LicenseContext";
 import { AuthForm } from "@/components/auth/AuthForm";
 import { AppLayout } from "@/components/layout/AppLayout";
 import Index from "./pages/Index"
@@ -41,79 +42,81 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <Routes>
-              <Route path="/auth" element={<AuthForm />} />
-              <Route path="/" element={
-                <ProtectedRoute>
-                  <AppLayout>
-                    <Index />
-                  </AppLayout>
-                </ProtectedRoute>
-              } />
-              <Route path="/lancamentos" element={
-                <ProtectedRoute>
-                  <AppLayout>
-                    <Transactions />
-                  </AppLayout>
-                </ProtectedRoute>
-              } />
-              <Route path="/categorias" element={
-                <ProtectedRoute>
-                  <AppLayout>
-                    <Categories />
-                  </AppLayout>
-                </ProtectedRoute>
-              } />
-              <Route path="/contas" element={
-                <ProtectedRoute>
-                  <AppLayout>
-                    <Accounts />
-                  </AppLayout>
-                </ProtectedRoute>
-              } />
-              <Route path="/centros-custo" element={
-                <ProtectedRoute>
-                  <AppLayout>
-                    <CostCenters />
-                  </AppLayout>
-                </ProtectedRoute>
-              } />
-              <Route path="/fornecedores" element={
-                <ProtectedRoute>
-                  <AppLayout>
-                    <Suppliers />
-                  </AppLayout>
-                </ProtectedRoute>
-              } />
-              <Route path="/recorrencias" element={
-                <ProtectedRoute>
-                  <AppLayout>
-                    <Recurrences />
-                  </AppLayout>
-                </ProtectedRoute>
-              } />
-              <Route path="/relatorios" element={
-                <ProtectedRoute>
-                  <AppLayout>
-                    <Reports />
-                  </AppLayout>
-                </ProtectedRoute>
-              } />
-              <Route path="/licencas" element={
-                <ProtectedRoute>
-                  <AppLayout>
-                    <Licenses />
-                  </AppLayout>
-                </ProtectedRoute>
-              } />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
-        </TooltipProvider>
+        <LicenseProvider>
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <Routes>
+                <Route path="/auth" element={<AuthForm />} />
+                <Route path="/" element={
+                  <ProtectedRoute>
+                    <AppLayout>
+                      <Index />
+                    </AppLayout>
+                  </ProtectedRoute>
+                } />
+                <Route path="/lancamentos" element={
+                  <ProtectedRoute>
+                    <AppLayout>
+                      <Transactions />
+                    </AppLayout>
+                  </ProtectedRoute>
+                } />
+                <Route path="/categorias" element={
+                  <ProtectedRoute>
+                    <AppLayout>
+                      <Categories />
+                    </AppLayout>
+                  </ProtectedRoute>
+                } />
+                <Route path="/contas" element={
+                  <ProtectedRoute>
+                    <AppLayout>
+                      <Accounts />
+                    </AppLayout>
+                  </ProtectedRoute>
+                } />
+                <Route path="/centros-custo" element={
+                  <ProtectedRoute>
+                    <AppLayout>
+                      <CostCenters />
+                    </AppLayout>
+                  </ProtectedRoute>
+                } />
+                <Route path="/fornecedores" element={
+                  <ProtectedRoute>
+                    <AppLayout>
+                      <Suppliers />
+                    </AppLayout>
+                  </ProtectedRoute>
+                } />
+                <Route path="/recorrencias" element={
+                  <ProtectedRoute>
+                    <AppLayout>
+                      <Recurrences />
+                    </AppLayout>
+                  </ProtectedRoute>
+                } />
+                <Route path="/relatorios" element={
+                  <ProtectedRoute>
+                    <AppLayout>
+                      <Reports />
+                    </AppLayout>
+                  </ProtectedRoute>
+                } />
+                <Route path="/licencas" element={
+                  <ProtectedRoute>
+                    <AppLayout>
+                      <Licenses />
+                    </AppLayout>
+                  </ProtectedRoute>
+                } />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </BrowserRouter>
+          </TooltipProvider>
+        </LicenseProvider>
       </AuthProvider>
     </QueryClientProvider>
   );
