@@ -62,13 +62,13 @@ export function AppSidebar() {
 
   const isActive = (path: string) => currentPath === path
   const getNavCls = ({ isActive }: { isActive: boolean }) =>
-    isActive ? "bg-primary text-primary-foreground font-medium" : "hover:bg-primary/10 text-foreground"
+    isActive ? "bg-sidebar-accent text-sidebar-accent-foreground font-medium" : "hover:bg-sidebar-accent/50 text-sidebar-foreground"
 
   return (
-    <Sidebar collapsible="icon" className="border-r bg-card">
-      <SidebarContent className="bg-card">
+    <Sidebar collapsible="icon" className="border-r border-sidebar-border bg-sidebar">
+      <SidebarContent className="bg-sidebar">
         {/* Logo/Brand */}
-        <div className="p-4 border-b bg-gradient-primary">
+        <div className="p-4 border-b border-sidebar-border bg-sidebar-primary">
           <div className="flex items-center gap-3">
             <img 
               src="/lovable-uploads/845de12e-ad02-47ec-ab1e-579893db3008.png" 
@@ -77,8 +77,8 @@ export function AppSidebar() {
             />
             {state === "expanded" && (
               <div>
-                <h2 className="text-lg font-bold text-white">7Club</h2>
-                <p className="text-xs text-white/80">Sistema Financeiro</p>
+                <h2 className="text-lg font-bold text-sidebar-primary-foreground">7Club</h2>
+                <p className="text-xs text-sidebar-primary-foreground/80">Sistema Financeiro</p>
               </div>
             )}
           </div>
@@ -86,7 +86,7 @@ export function AppSidebar() {
         
         {/* Principal */}
         <SidebarGroup className="px-2">
-          <SidebarGroupLabel className="text-muted-foreground font-medium">Principal</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-sidebar-foreground/70 font-medium">Principal</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {principalItems.map((item) => (
@@ -105,7 +105,7 @@ export function AppSidebar() {
 
         {/* Financeiro */}
         <SidebarGroup className="px-2">
-          <SidebarGroupLabel className="text-muted-foreground font-medium">Financeiro</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-sidebar-foreground/70 font-medium">Financeiro</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {financeiroItems.map((item) => (
@@ -124,7 +124,7 @@ export function AppSidebar() {
 
         {/* Catálogo */}
         <SidebarGroup className="px-2">
-          <SidebarGroupLabel className="text-muted-foreground font-medium">Catálogo</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-sidebar-foreground/70 font-medium">Catálogo</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {catalogoItems.map((item) => (
@@ -143,7 +143,7 @@ export function AppSidebar() {
 
         {/* Ferramentas */}
         <SidebarGroup className="px-2">
-          <SidebarGroupLabel className="text-muted-foreground font-medium">Ferramentas</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-sidebar-foreground/70 font-medium">Ferramentas</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {ferramentasItems.map((item) => (
@@ -162,7 +162,7 @@ export function AppSidebar() {
 
         {/* Sistema */}
         <SidebarGroup className="px-2">
-          <SidebarGroupLabel className="text-muted-foreground font-medium">Sistema</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-sidebar-foreground/70 font-medium">Sistema</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {sistemaItems.map((item) => (
